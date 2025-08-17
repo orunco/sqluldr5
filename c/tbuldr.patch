@@ -1,0 +1,38 @@
+Index: c/tbuldr.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/c/tbuldr.c b/c/tbuldr.c
+--- a/c/tbuldr.c	(revision 156e5835d348b9955b02ace722817df344427913)
++++ b/c/tbuldr.c	(revision a6a96d1e6c17f94ba61248bb262ce525cd2fe9ba)
+@@ -786,7 +786,28 @@
+                 p_tmp=p_tmp+param->field_len;
+               }
+ */
+-              fwrite(cols[c]->colbuf+(r* cols[c]->colwidth),*(cols[c]->col_retlen+r),1,(fp == NULL?stdout:fp));
++              if(cols[c]->coltype == SQLT_STR || cols[c]->coltype == SQLT_VCS || cols[c]->coltype == SQLT_VST)
++              {
++                  char t[1024];
++                  memcpy(t,cols[c]->colbuf+(r* cols[c]->colwidth),*(cols[c]->col_retlen+r));
++                  memset(t,0,(*(cols[c]->col_retlen+r))+1);
++                  /*
++                  if(strchr(t,'\001'))
++                  {                     
++                      fprintf((fp_log == NULL?stderr:fp_log),"-");
++                  }         
++                  else   
++                  {
++                      fwrite(cols[c]->colbuf+(r* cols[c]->colwidth),*(cols[c]->col_retlen+r),1,(fp == NULL?stdout:fp));
++                  }                      
++*/
++                 
++              
++                  
++              }else
++              {
++                fwrite(cols[c]->colbuf+(r* cols[c]->colwidth),*(cols[c]->col_retlen+r),1,(fp == NULL?stdout:fp));
++              }
+               if(param->enclose_len) fwrite(param->enclose,param->enclose_len,1,(fp == NULL?stdout:fp));
+             }
+           }
